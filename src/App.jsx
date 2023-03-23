@@ -18,6 +18,7 @@ import Students from "./pages/Students";
 
 const App = () => {
   const session = useSelector((state) => state.user.session);
+
   return (
     <>
       <Navbar></Navbar>
