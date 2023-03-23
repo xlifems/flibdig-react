@@ -1,6 +1,7 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -18,6 +19,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { signIn } from "../features/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import imageLibrary from "../assets/pexels-cottonbro-studio-4690297.jpg";
 
 function Copyright(props) {
   return (
@@ -45,9 +47,13 @@ export default function SignInSide() {
   const dispatch = useDispatch();
 
   const [addNewPost, response] = useAddNewPostMutation();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    setLoading(true);
+
     const data = new FormData(event.currentTarget);
     const { email, password } = event.target.elements;
 
@@ -60,18 +66,20 @@ export default function SignInSide() {
       .unwrap()
       .then((response) => {
         console.log(response);
-        dispatch(signIn({ ...response.data }));
-        localStorage.setItem("authenticated", true);
+        dispatch(signIn({ ...response.data }));       
         navigate("/dashboard");
       })
-      .then((error) => {
+      .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
+      <Grid container component="main" sx={{ height: "90vh" }}>
         <CssBaseline />
         <Grid
           item
@@ -79,7 +87,7 @@ export default function SignInSide() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
+            backgroundImage: `url(${imageLibrary})`,
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -135,14 +143,15 @@ export default function SignInSide() {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
-              <Button
+              <LoadingButton
                 type="submit"
                 fullWidth
                 variant="contained"
+                loading={loading}
                 sx={{ mt: 3, mb: 2 }}
               >
                 Sign In
-              </Button>
+              </LoadingButton>
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">

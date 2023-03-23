@@ -23,6 +23,7 @@ export const userSlice = createSlice({
     },
     signIn: (state, action) => {
       state.session = { ...state.session, ...action.payload };
+      localStorage.setItem("session", JSON.stringify(state.session));
     },
     getStudents: (state, action) => {
       state.session = action.payload;

@@ -1,22 +1,37 @@
 import {
+  Collapse,
   Divider,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  ListSubheader,
+  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import WcIcon from '@mui/icons-material/Wc';
-import PersonIcon from '@mui/icons-material/Person';
+import WcIcon from "@mui/icons-material/Wc";
+import PersonIcon from "@mui/icons-material/Person";
+import InboxIcon from "@mui/icons-material/Inbox";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import AddIcon from "@mui/icons-material/Add";
+import PrintIcon from "@mui/icons-material/Print";
 
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
 export default function NavListDrawerResponsive({ onClick, navLinks }) {
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
   return (
-    <Box sx={{ width: 250 }} onClick={onClick}>
+    <Box sx={{ width: 250 }}>
       <nav aria-label="main mailbox folders">
         <List sx={{ display: { xs: "block", sm: "none" } }}>
           {navLinks.map((item) => (
@@ -28,8 +43,18 @@ export default function NavListDrawerResponsive({ onClick, navLinks }) {
             </ListItem>
           ))}
         </List>
-        <List>
-          <ListItem disablePadding>
+        <List
+          sx={ {mt: 2} }
+          aria-labelledby="nested-list-subheader"
+          subheader={
+            <ListSubheader component="div" id="nested-list-subheader" sx={ {mb: 3} }>
+              <Typography variant="h5">
+               FlibDig
+              </Typography>
+            </ListSubheader>
+          }
+        >
+          <ListItem disablePadding onClick={onClick}>
             <ListItemButton component={NavLink} to="/dashboard">
               <ListItemIcon>
                 <DashboardIcon />
@@ -37,7 +62,7 @@ export default function NavListDrawerResponsive({ onClick, navLinks }) {
               <ListItemText primary="Dashboard" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
+          <ListItem disablePadding onClick={onClick}>
             <ListItemButton component={NavLink} to="/user">
               <ListItemIcon>
                 <PersonIcon />
@@ -46,7 +71,7 @@ export default function NavListDrawerResponsive({ onClick, navLinks }) {
             </ListItemButton>
           </ListItem>
 
-          <ListItem disablePadding>
+          <ListItem disablePadding onClick={onClick}>
             <ListItemButton component={NavLink} to="/student">
               <ListItemIcon>
                 <WcIcon />
@@ -54,6 +79,33 @@ export default function NavListDrawerResponsive({ onClick, navLinks }) {
               <ListItemText primary="Estudiantes" />
             </ListItemButton>
           </ListItem>
+
+          <ListItemButton onClick={handleClick}>
+            <ListItemIcon>
+              <LibraryBooksIcon />
+            </ListItemIcon>
+            <ListItemText primary="Libros" />
+            {open ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding onClick={onClick}>
+              <ListItemButton sx={{ pl: 4 }} component={NavLink} to="/book">
+                <ListItemIcon>
+                  <AddIcon />
+                </ListItemIcon>
+                <ListItemText primary="Agregar" />
+              </ListItemButton>
+            </List>
+
+            <List component="div" disablePadding onClick={onClick}>
+              <ListItemButton sx={{ pl: 4 }} component={NavLink} to="/book">
+                <ListItemIcon>
+                  <PrintIcon />
+                </ListItemIcon>
+                <ListItemText primary="Imprimir" />
+              </ListItemButton>
+            </List>
+          </Collapse>
         </List>
       </nav>
       <Divider />
