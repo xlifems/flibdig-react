@@ -15,6 +15,7 @@ import Books from "./pages/Books";
 
 import { useSelector } from "react-redux";
 import Students from "./pages/Students";
+import Certificates from "./pages/Certificates";
 
 const App = () => {
   const session = useSelector((state) => state.user.session);
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/user" element={<Users />} />
           <Route path="/student" element={<Students />} />
           <Route path="/book" element={<Books />} />
+          <Route path="/certificate" element={<Certificates />} />
 
           <Route
             path="/sign-on"

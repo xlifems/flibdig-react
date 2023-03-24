@@ -19,6 +19,7 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import AddIcon from "@mui/icons-material/Add";
 import PrintIcon from "@mui/icons-material/Print";
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
@@ -77,6 +78,15 @@ export default function NavListDrawerResponsive({ onClick, navLinks }) {
                 <WcIcon />
               </ListItemIcon>
               <ListItemText primary="Estudiantes" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding onClick={onClick}>
+            <ListItemButton component={NavLink} to="/certificate">
+              <ListItemIcon>
+                <ReceiptLongIcon />
+              </ListItemIcon>
+              <ListItemText primary="Certificados" />
             </ListItemButton>
           </ListItem>
 
