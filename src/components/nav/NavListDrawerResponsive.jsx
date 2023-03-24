@@ -20,6 +20,7 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import AddIcon from "@mui/icons-material/Add";
 import PrintIcon from "@mui/icons-material/Print";
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import SchoolIcon from '@mui/icons-material/School';
 
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
@@ -68,7 +69,7 @@ export default function NavListDrawerResponsive({ onClick, navLinks }) {
               <ListItemIcon>
                 <PersonIcon />
               </ListItemIcon>
-              <ListItemText primary="Usuarios" />
+              <ListItemText primary="Usuario" />
             </ListItemButton>
           </ListItem>
 
@@ -77,7 +78,16 @@ export default function NavListDrawerResponsive({ onClick, navLinks }) {
               <ListItemIcon>
                 <WcIcon />
               </ListItemIcon>
-              <ListItemText primary="Estudiantes" />
+              <ListItemText primary="Estudiante" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding onClick={onClick}>
+            <ListItemButton component={NavLink} to="/school">
+              <ListItemIcon>
+                <SchoolIcon />
+              </ListItemIcon>
+              <ListItemText primary="Institucion" />
             </ListItemButton>
           </ListItem>
 
@@ -86,7 +96,7 @@ export default function NavListDrawerResponsive({ onClick, navLinks }) {
               <ListItemIcon>
                 <ReceiptLongIcon />
               </ListItemIcon>
-              <ListItemText primary="Certificados" />
+              <ListItemText primary="Certificado" />
             </ListItemButton>
           </ListItem>
 
@@ -94,7 +104,7 @@ export default function NavListDrawerResponsive({ onClick, navLinks }) {
             <ListItemIcon>
               <LibraryBooksIcon />
             </ListItemIcon>
-            <ListItemText primary="Libros" />
+            <ListItemText primary="Libro" />
             {open ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
           <Collapse in={open} timeout="auto" unmountOnExit>

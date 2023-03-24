@@ -12,10 +12,11 @@ import SignOn from "./pages/SignOn";
 import Contact from "./pages/Contact";
 import Users from "./pages/Users";
 import Books from "./pages/Books";
+import Certificates from "./pages/Certificates";
+import Schools from "./pages/Schools";
 
 import { useSelector } from "react-redux";
 import Students from "./pages/Students";
-import Certificates from "./pages/Certificates";
 
 const App = () => {
   const session = useSelector((state) => state.user.session);
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/student" element={<Students />} />
           <Route path="/book" element={<Books />} />
           <Route path="/certificate" element={<Certificates />} />
+          <Route path="/school" element={<Schools/> } />
 
           <Route
             path="/sign-on"
