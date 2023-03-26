@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import React from "react";
 import BookForm from "../components/book/BookForm";
+import BookList from "../components/book/BookList";
 
 const Books = () => {
   return (
@@ -9,6 +10,7 @@ const Books = () => {
         Libros
       </Typography>
       <BookForm />
+      <BookList></BookList>
     </>
   );
 };

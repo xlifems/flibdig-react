@@ -4,15 +4,15 @@ export const apiSchoolSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/api",
   }),
-  tagTypes: ["Post"],
+  tagTypes: ["School"],
   endpoints: (builder) => ({
     getSchools: builder.query({
       query: () => "/schools",
-      providesTags: ["Post"],
+      providesTags: ["School"],
     }),
     getSchool: builder.query({
       query: (payload) => "/schools/" + payload.id,
-      providesTags: ["Post"],
+      providesTags: ["School"],
     }),
     addSchool: builder.mutation({
       query: (payload) => ({
@@ -23,7 +23,7 @@ export const apiSchoolSlice = createApi({
           "Content-type": "application/json; charset=UTF-8",
         },
       }),
-      invalidatesTags: ["Post"],
+      invalidatesTags: ["School"],
     }),
   }),
 });
