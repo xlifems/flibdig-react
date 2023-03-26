@@ -9,14 +9,27 @@ import Grid from "@mui/material/Grid";
 import React, { useState } from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { useGetSchoolsQuery } from "../features/shool/apiSchoolSlice";
 
 const BookForm = () => {
   const [age, setAge] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
+    console.log(
+      "🚀 ~ file: BookForm.jsx:21 ~ handleChange ~ event.target.value:",
+      event.target.value
+    );
     setAge(event.target.value);
   };
+
+  const {
+    data: schools,
+    isLoading: isGetLoading,
+    isSuccess: isGetSuccess,
+    isError: isGetError,
+    error: getError,
+  } = useGetSchoolsQuery({ refetchOnMountOrArgChange: true });
 
   return (
     <>
@@ -32,9 +45,12 @@ const BookForm = () => {
                 label="Institucion"
                 onChange={handleChange}
               >
-                <MenuItem value={10}>Institucion 1</MenuItem>
-                <MenuItem value={20}>Institucion 2</MenuItem>
-                <MenuItem value={30}>Institucion 3</MenuItem>
+                {isGetSuccess &&
+                  schools.map((item) => (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>

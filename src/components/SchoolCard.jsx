@@ -9,50 +9,54 @@ import Typography from "@mui/material/Typography";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import EditIcon from '@mui/icons-material/Edit';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
-const SchoolCard = () => {
+const SchoolCard = ({ school }) => {
+
   const theme = useTheme();
 
   return (
     <Card sx={{ display: "flex" }}>
-      <Box sx={{ display: "flex", flexDirection: "column"  , flexGrow: 1}}>
+      <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
         <CardContent sx={{ flex: "1 0 auto" }}>
           <Typography component="div" variant="h5">
-            Institucion Eductiva Santiago ISabel
+            {school.name}
           </Typography>
           <Typography
             variant="subtitle1"
             color="text.secondary"
             component="div"
           >
-            Mac Miller
+            {school.address}
           </Typography>
         </CardContent>
 
         <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
           <IconButton aria-label="previous">
             {theme.direction === "rtl" ? (
-              <SkipNextIcon />
+              <EditIcon />
             ) : (
-              <SkipPreviousIcon />
+              <EditIcon />
             )}
           </IconButton>
           <IconButton aria-label="play/pause">
-            <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+            <PostAddIcon sx={{ height: 38, width: 38 }} />
           </IconButton>
           <IconButton aria-label="next">
             {theme.direction === "rtl" ? (
-              <SkipPreviousIcon />
+              <AccountBoxIcon />
             ) : (
-              <SkipNextIcon />
+              <AccountBoxIcon />
             )}
           </IconButton>
         </Box>
       </Box>
       <CardMedia
         component="img"
-        sx={{ maxWidth: '250px', ml: 2 }}
-        image="http://ieducativalacebe.weebly.com/uploads/1/2/9/6/12961260/2131032.png"
+        sx={{ minWidth: "200px",  maxWidth: "200px", ml: 2 }}
+        image={school.shield}
         alt="Live from space album cover"
       />
     </Card>
