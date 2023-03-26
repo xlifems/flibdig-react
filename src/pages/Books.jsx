@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import React from "react";
-import BookForm from "../components/BookForm";
+import BookForm from "../components/book/BookForm";
 
 const Books = () => {
   return (

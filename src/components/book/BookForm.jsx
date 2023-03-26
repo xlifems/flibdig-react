@@ -9,18 +9,26 @@ import Grid from "@mui/material/Grid";
 import React, { useState } from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { useGetSchoolsQuery } from "../features/shool/apiSchoolSlice";
+import { useGetSchoolsQuery } from "../../features/shool/apiSchoolSlice";
 
 const BookForm = () => {
-  const [age, setAge] = useState("");
+  const [type, setType] = useState("qualitative");
+  const [school, setSchool] = useState("");
+
   const [loading, setLoading] = useState(false);
 
+  const bookTypes = [
+    { value: "qualitative", label: "Cualitativo" },
+    { value: "quantitative", label: "Cuantitativo" },
+    { value: "both", label: "Ambos" },
+  ];
+
   const handleChange = (event) => {
-    console.log(
-      "🚀 ~ file: BookForm.jsx:21 ~ handleChange ~ event.target.value:",
-      event.target.value
-    );
-    setAge(event.target.value);
+    if (event.target.name === "school") {
+      setSchool(event.target.value);
+    } else {
+      setType(event.target.value);
+    }
   };
 
   const {
@@ -37,11 +45,12 @@ const BookForm = () => {
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Institucion</InputLabel>
+              <InputLabel id="school-label">Institucion</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={age}
+                labelId="school-label"
+                id="school"
+                name="school"
+                value={school}
                 label="Institucion"
                 onChange={handleChange}
               >
@@ -57,7 +66,7 @@ const BookForm = () => {
           <Grid item xs={6}>
             <TextField
               id="outlined-error-helper-text"
-              label="Ano del libro"
+              label="Name"
               error={true}
               helperText={true && "Incorrect entry."}
               fullWidth
@@ -65,23 +74,32 @@ const BookForm = () => {
           </Grid>
           <Grid item xs={6}>
             <TextField
-              error
+              error={false}
               id="outlined-error-helper-text"
-              label="Error"
-              defaultValue="Hello World"
-              helperText="Incorrect entry."
+              label="Year"
+              helperText={false ? "Incorrect entry." : ""}
+              type="number"
               fullWidth
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              error
-              id="outlined-error-helper-text"
-              label="Error"
-              defaultValue="Hello World"
-              helperText="Incorrect entry."
-              fullWidth
-            />
+            <FormControl fullWidth>
+              <InputLabel id="book-type-label">Type</InputLabel>
+              <Select
+                labelId="book-type-label"
+                id="book-type"
+                value={type}
+                label="Type"
+                name="book-type"
+                onChange={handleChange}
+              >
+                {bookTypes.map((item) => (
+                  <MenuItem key={item.value} value={item.value}>
+                    {item.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
         </Grid>
         <LoadingButton
