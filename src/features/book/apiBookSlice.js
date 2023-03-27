@@ -25,7 +25,28 @@ export const apiBookSlice = createApi({
       }),
       invalidatesTags: ["Book"],
     }),
+    addBookMatters: builder.mutation({
+      query: (payload) => ({
+        url: "/books/matters",
+        method: "POST",
+        body: payload,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["Book"],
+    }),
+    getBookMatters: builder.query({
+      query: (payload) => "/books/" + payload + "/matters",
+      providesTags: ["Book"],
+    }),
+    invalidatesTags: ["Book"],
   }),
 });
-export const { useGetBooksQuery, useGetBookQuery, useAddBookMutation } =
-  apiBookSlice;
+export const {
+  useGetBooksQuery,
+  useGetBookQuery,
+  useAddBookMutation,
+  useAddBookMattersMutation,
+  useGetBookMattersQuery,
+} = apiBookSlice;

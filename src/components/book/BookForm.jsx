@@ -1,13 +1,9 @@
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-
-import { styled } from "@mui/material/styles";
-
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 
 import React, { useState } from "react";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useGetSchoolsQuery } from "../../features/shool/apiSchoolSlice";
 import { useAddBookMutation } from "../../features/book/apiBookSlice";
@@ -20,7 +16,7 @@ const BookForm = () => {
     { value: "qualitative", label: "Cualitativo" },
     { value: "quantitative", label: "Cuantitativo" },
     { value: "both", label: "Ambos" },
-  ]; 
+  ];
 
   const handleChange = (event) => {
     if (event.target.name === "school") {
@@ -141,7 +137,7 @@ const BookForm = () => {
         >
           Enviar
         </LoadingButton>
-      </Box>      
+      </Box>
     </>
   );
 };

@@ -13,10 +13,13 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { useGetBooksQuery } from "../../features/book/apiBookSlice";
+import {
+  useGetBookMattersQuery,
+  useGetBooksQuery,
+} from "../../features/book/apiBookSlice";
 import { Button } from "@mui/material";
 import MatterForm from "./MatterForm";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectBook } from "../../features/book/bookSlice";
 
 function Row(props) {
@@ -24,9 +27,15 @@ function Row(props) {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
+  const selectedBook = useSelector((state) => state.book.selectedBook);
+
   const openAddMater = (book) => {
     dispatch(selectBook(book));
     handleClickOpen(book);
+  };
+
+  const openContent = () => {
+    setOpen(!open);
   };
 
   return (
@@ -36,7 +45,7 @@ function Row(props) {
           <IconButton
             aria-label="expand row"
             size="small"
-            onClick={() => setOpen(!open)}
+            onClick={openContent}
           >
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
@@ -54,41 +63,74 @@ function Row(props) {
           </Button>
         </TableCell>
       </TableRow>
+
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                History
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
-                  </TableRow>
-                </TableHead>
-                {/* <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody> */}
-              </Table>
-            </Box>
+            {open && <CollapseContent bookId={row.id}></CollapseContent>}
           </Collapse>
         </TableCell>
       </TableRow>
+    </>
+  );
+}
+
+function CollapseContent(props) {
+  const payload = {
+    book_id: props.bookId, //selectedBook?.id,
+  };
+  const {
+    data: matters,
+    isLoading: isGetLoading,
+    isSuccess: isGetSuccess,
+    isError: isGetError,
+    error: getError,
+  } = useGetBookMattersQuery(payload.book_id);
+
+  return (
+    <>
+      {isGetLoading && (
+        <div className="d-flex justify-content-center">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
+
+      {isGetSuccess && (
+        <Box sx={{ margin: 1 }}>
+          <Typography variant="h6" gutterBottom component="div">
+            Materias
+          </Typography>
+          <Table size="small" aria-label="purchases">
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell align="right">IH</TableCell>
+                <TableCell align="right">Amount</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {isGetSuccess &&
+                matters.data.map((matter) => (
+                  <TableRow key={matter.id}>
+                    <TableCell component="th" scope="row">
+                      {matter.name}
+                    </TableCell>
+                    <TableCell align="right">{matter.hours}</TableCell>
+                    <TableCell align="right">{matter.hours}</TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </Box>
+      )}
+
+      {isGetError && (
+        <div className="alert alert-danger" role="alert">
+          {getError}
+        </div>
+      )}
     </>
   );
 }

@@ -21,14 +21,18 @@ import {
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useSelector } from "react-redux";
+import { useAddBookMattersMutation } from "../../features/book/apiBookSlice";
+import { LoadingButton } from "@mui/lab";
 
 const MatterForm = ({ openDialog, handleClose }) => {
   const [matters, setMatters] = useState([]);
   const [hours, setHours] = useState(0);
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [addBookMatters, response] = useAddBookMattersMutation();
 
   const selectedBook = useSelector((state) => state.book.selectedBook);
-  
+
   const handleAdd = () => {
     const matter = {
       hours,
@@ -45,6 +49,19 @@ const MatterForm = ({ openDialog, handleClose }) => {
 
   const save = () => {
     console.log(matters);
+    setLoading(true)
+    const payload = {
+      matters,
+    };
+    addBookMatters(payload)
+      .unwrap()
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {setLoading(false)});
   };
 
   return (
@@ -113,7 +130,13 @@ const MatterForm = ({ openDialog, handleClose }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleAdd}>Add More</Button>
-          <Button onClick={save}>Enviar</Button>
+          <LoadingButton
+            type="submit"
+            loading={loading}
+            onClick={save}
+          >
+            Enviar
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </>
