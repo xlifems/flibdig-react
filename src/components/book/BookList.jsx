@@ -16,10 +16,18 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useGetBooksQuery } from "../../features/book/apiBookSlice";
 import { Button } from "@mui/material";
 import MatterForm from "./MatterForm";
+import { useDispatch } from "react-redux";
+import { selectBook } from "../../features/book/bookSlice";
 
 function Row(props) {
   const { row, handleClickOpen } = props;
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+
+  const openAddMater = (book) => {
+    dispatch(selectBook(book));
+    handleClickOpen(book);
+  };
 
   return (
     <>
@@ -41,7 +49,7 @@ function Row(props) {
         <TableCell align="right">{row.school_id}</TableCell>
         <TableCell align="right">{row.id}</TableCell>
         <TableCell align="right">
-          <Button variant="outlined" onClick={() => handleClickOpen(row)}>
+          <Button variant="outlined" onClick={() => openAddMater(row)}>
             Add Matter
           </Button>
         </TableCell>

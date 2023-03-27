@@ -7,6 +7,8 @@ import studentReducer from "../features/student/studentSlice";
 import { apiStudentSlice } from "../features/student/apiStudentSlice";
 
 import { apiSchoolSlice } from "../features/shool/apiSchoolSlice";
+
+import bookReducer from "../features/book/bookSlice";
 import { apiBookSlice } from "../features/book/apiBookSlice";
 
 const store = configureStore({
@@ -16,6 +18,7 @@ const store = configureStore({
     student: studentReducer,
     [apiStudentSlice.reducerPath]: apiStudentSlice.reducer,
     [apiSchoolSlice.reducerPath]: apiSchoolSlice.reducer,
+    book: bookReducer,
     [apiBookSlice.reducerPath]: apiBookSlice.reducer,
   },
 
@@ -24,7 +27,7 @@ const store = configureStore({
       .concat(apiSlice.middleware)
       .concat(apiStudentSlice.middleware)
       .concat(apiSchoolSlice.middleware)
-      .concat(apiBookSlice.middleware)
+      .concat(apiBookSlice.middleware),
 });
 
 setupListeners(store.dispatch);

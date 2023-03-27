@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Avatar,
   Box,
   Button,
   Dialog,
@@ -7,12 +8,45 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
   Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
   TextField,
+  Typography,
 } from "@mui/material";
+
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useSelector } from "react-redux";
 
 const MatterForm = ({ openDialog, handleClose }) => {
   const [matters, setMatters] = useState([]);
+  const [hours, setHours] = useState(0);
+  const [name, setName] = useState("");
+
+  const selectedBook = useSelector((state) => state.book.selectedBook);
+  
+  const handleAdd = () => {
+    const matter = {
+      hours,
+      name,
+      book_id: selectedBook.id,
+    };
+    setMatters(matters.concat([matter]));
+  };
+
+  const handleChange = (event) => {
+    if (event.target.name === "name") setName(event.target.value);
+    if (event.target.name === "hours") setHours(event.target.value);
+  };
+
+  const save = () => {
+    console.log(matters);
+  };
+
   return (
     <>
       <Dialog open={openDialog} onClose={handleClose}>
@@ -31,33 +65,55 @@ const MatterForm = ({ openDialog, handleClose }) => {
             }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={8}>
+              <Grid item xs={10}>
                 <TextField
+                  size="small"
                   id="outlined-error-helper-text"
                   label="Matter"
                   error={false}
                   helperText={false && "Incorrect entry."}
                   fullWidth
-                  name="matter"
+                  name="name"
+                  onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={2}>
                 <TextField
+                  size="small"
                   id="outlined-error-helper-text"
-                  label="IH"
+                  label="Hours"
                   error={false}
                   helperText={false && "Incorrect entry."}
                   fullWidth
-                  name="ih"
+                  name="hours"
                   type="number"
+                  onChange={handleChange}
                 />
               </Grid>
             </Grid>
+
+            <List>
+              {matters.map((matter, index) => (
+                <div key={index}>
+                  <ListItem
+                    secondaryAction={
+                      <IconButton edge="end" aria-label="delete">
+                        <DeleteIcon />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemText primary={matter.name} />
+                    <Typography sx={{ mr: 1 }}>{matter.hours}</Typography>
+                  </ListItem>
+                  <Divider light />
+                </div>
+              ))}
+            </List>
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Add More</Button>
-          <Button onClick={handleClose}>Enviar</Button>
+          <Button onClick={handleAdd}>Add More</Button>
+          <Button onClick={save}>Enviar</Button>
         </DialogActions>
       </Dialog>
     </>
