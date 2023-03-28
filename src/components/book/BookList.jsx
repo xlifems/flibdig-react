@@ -22,6 +22,8 @@ import MatterForm from "./MatterForm";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBook } from "../../features/book/bookSlice";
 
+import AddBoxIcon from "@mui/icons-material/AddBox";
+
 function Row(props) {
   const { row, handleClickOpen } = props;
   const [open, setOpen] = useState(false);
@@ -56,10 +58,13 @@ function Row(props) {
         <TableCell align="right">{row.year}</TableCell>
         <TableCell align="right">{row.type}</TableCell>
         <TableCell align="right">{row.school_id}</TableCell>
-        <TableCell align="right">{row.id}</TableCell>
         <TableCell align="right">
-          <Button variant="outlined" onClick={() => openAddMater(row)}>
-            Add Matter
+          <Button
+            variant="outlined"
+            startIcon={<AddBoxIcon />}
+            onClick={() => openAddMater(row)}
+          >
+            Matter
           </Button>
         </TableCell>
       </TableRow>
@@ -107,7 +112,6 @@ function CollapseContent(props) {
               <TableRow>
                 <TableCell>Name</TableCell>
                 <TableCell align="right">IH</TableCell>
-                <TableCell align="right">Amount</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -117,7 +121,6 @@ function CollapseContent(props) {
                     <TableCell component="th" scope="row">
                       {matter.name}
                     </TableCell>
-                    <TableCell align="right">{matter.hours}</TableCell>
                     <TableCell align="right">{matter.hours}</TableCell>
                   </TableRow>
                 ))}
@@ -174,9 +177,6 @@ export default function BookList() {
 
   return (
     <>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open form dialog
-      </Button>
       <MatterForm
         handleClose={handleClose}
         openDialog={openDialog}
@@ -191,7 +191,6 @@ export default function BookList() {
               <TableCell align="right">Year</TableCell>
               <TableCell align="right">Type</TableCell>
               <TableCell align="right">School</TableCell>
-              <TableCell align="right">Id</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
