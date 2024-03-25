@@ -3,6 +3,10 @@ export const apiBookSlice = createApi({
   reducerPath: "apiBookSlice",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/api",
+    headers: {
+      "Content-type": "application/json",
+      "bearer": "Bearer " + JSON.parse(localStorage.session).token,
+    },
   }),
   tagTypes: ["Book"],
   endpoints: (builder) => ({

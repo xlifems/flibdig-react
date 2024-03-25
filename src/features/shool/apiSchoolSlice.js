@@ -3,6 +3,17 @@ export const apiSchoolSlice = createApi({
   reducerPath: "apiSchoolSlice",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/api",
+    
+    prepareHeaders: (headers) => {
+      const token = JSON.parse(localStorage.session).token;
+     
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+        headers.set("Content-Type", "application/json");
+      }
+
+      return headers;
+    },
   }),
   tagTypes: ["School"],
   endpoints: (builder) => ({
