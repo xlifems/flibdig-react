@@ -6,11 +6,14 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
+import DownloadIcon from "@mui/icons-material/Download";
 
 import {
-  useGetStudentsQuery
-} from "../features/student/apiStudentSlice"
+  useGetCertificateQuery,
+  useGetPDFCertificateMutation,
+  useGetStudentsQuery,
+} from "../features/student/apiStudentSlice";
 import { Box, IconButton } from "@mui/material";
 
 export default function StudentList() {
@@ -21,6 +24,31 @@ export default function StudentList() {
     isError: isGetError,
     error: getError,
   } = useGetStudentsQuery({ refetchOnMountOrArgChange: true });
+
+  const [getPDFCertificate, response] = useGetPDFCertificateMutation();
+
+  const downloadCertificate = (id) => {
+    const payload = {
+      student_id: id,
+    };
+
+    getPDFCertificate(payload)
+      .unwrap()
+      .then(async (response) => {
+        var hiddenElement = document.createElement("a");
+
+        hiddenElement.href = response.data;
+        hiddenElement.target = "_blank";
+        hiddenElement.download = `${payload.student_id}_report.pdf`;
+        hiddenElement.click();
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        console.log("finally");
+      });
+  };
 
   return (
     <>
@@ -39,8 +67,13 @@ export default function StudentList() {
               <ListItem
                 alignItems="flex-start"
                 secondaryAction={
-                  <IconButton edge="end" aria-label="comments">
-                    <DeleteIcon />
+                  // Icon button to download the certificate
+                  <IconButton
+                    edge="end"
+                    aria-label="comments"
+                    onClick={() => downloadCertificate(item.id)}
+                  >
+                    <DownloadIcon />
                   </IconButton>
                 }
                 disablePadding
