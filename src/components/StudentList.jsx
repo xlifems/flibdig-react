@@ -16,7 +16,11 @@ import {
 } from "../features/student/apiStudentSlice";
 import { Box, IconButton } from "@mui/material";
 
+import { getCertificate } from "../features/student/studentSlice";
+import { useSelector, useDispatch } from "react-redux";
+
 export default function StudentList() {
+  const dispatch = useDispatch();
   const {
     data: students,
     isLoading: isGetLoading,
@@ -71,7 +75,7 @@ export default function StudentList() {
                   <IconButton
                     edge="end"
                     aria-label="comments"
-                    onClick={() => downloadCertificate(item.id)}
+                    onClick={() => dispatch(getCertificate(item.id))}
                   >
                     <DownloadIcon />
                   </IconButton>

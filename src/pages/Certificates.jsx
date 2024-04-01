@@ -1,7 +1,7 @@
 import { PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
 
 import React from "react";
-import CertificatePDF from "../components/CertificatePDF";
+import CertificatePDF from "../components/certificate/CertificatePDF";
 
 const Certificates = () => {
   return (
