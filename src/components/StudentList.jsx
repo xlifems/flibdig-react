@@ -13,23 +13,29 @@ import {
   useGetCertificateQuery,
   useGetPDFCertificateMutation,
   useGetStudentsQuery,
+  useGetStudentsPaginationMutation,
 } from "../features/student/apiStudentSlice";
 import { Box, IconButton } from "@mui/material";
 
 import { getCertificate } from "../features/student/studentSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export default function StudentList() {
   const dispatch = useDispatch();
-  const {
-    data: students,
-    isLoading: isGetLoading,
-    isSuccess: isGetSuccess,
-    isError: isGetError,
-    error: getError,
-  } = useGetStudentsQuery({ refetchOnMountOrArgChange: true });
-
+  const [students, setStudents] = useState([]);
   const [getPDFCertificate, response] = useGetPDFCertificateMutation();
+  const [getStudentsPagination, res] = useGetStudentsPaginationMutation();
+
+  const fetchStudents = async () => {
+    const response = await getStudentsPagination({
+      page: 1,
+      perPage: 10,
+    });
+
+    setStudents(response.data.data);
+  };
 
   const downloadCertificate = (id) => {
     const payload = {
@@ -54,17 +60,21 @@ export default function StudentList() {
       });
   };
 
+  useEffect(() => {
+    fetchStudents();
+  }, []);
+
   return (
     <>
-      {isGetLoading && (
+      {/*  {isGetLoading && (
         <div className="d-flex justify-content-center">
           <div className="spinner-border" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
         </div>
-      )}
+      )} */}
 
-      {isGetSuccess && (
+      {students.length && (
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
           {students.map((item) => (
             <Box key={item.id}>
@@ -108,11 +118,11 @@ export default function StudentList() {
         </List>
       )}
 
-      {isGetError && (
+      {/*    {isGetError && (
         <div className="alert alert-danger" role="alert">
           {getError}
         </div>
-      )}
+      )} */}
     </>
   );
 }

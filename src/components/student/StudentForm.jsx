@@ -4,18 +4,26 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import Student from "../../models/Student";
+import { useAddStudentMutation } from "../../features/student/apiStudentSlice";
 
 export default function StudentForm() {
   const [student, setStudent] = useState(new Student());
-  
+  const [addStudent, response] = useAddStudentMutation();
+
   const [error, setError] = useState({
     error: false,
     message: "",
   });
 
-  const emailValidation = (email) => {   
+  const emailValidation = (email) => {
     const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     return regex.test(email);
   };
@@ -30,12 +38,20 @@ export default function StudentForm() {
       return;
     }
     const data = new FormData(event.currentTarget);
-    console.log(data);
+
+    addStudent(student)
+      .unwrap()
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setStudent({ ...student, [name]: value });    
+    setStudent({ ...student, [name]: value });
   };
 
   return (
@@ -141,6 +157,27 @@ export default function StudentForm() {
                   <MenuItem value={"female"}>Male</MenuItem>
                 </Select>
               </FormControl>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Button
+                fullWidth
+                variant="outlined"
+                color="warning"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Cancelar
+              </Button>
+            </Grid>
+            <Grid item xs={6}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Guardar
+              </Button>
             </Grid>
           </Grid>
         </Box>

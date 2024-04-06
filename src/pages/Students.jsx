@@ -17,7 +17,7 @@ import StudentForm from "../components/student/StudentForm";
 
 const Student = () => {
   const dispatch = useDispatch();
-  const students = useSelector((state) => state.student.students);  
+  const students = useSelector((state) => state.student.students);
 
   const [open, setOpen] = useState(false);
 
@@ -58,12 +58,6 @@ const Student = () => {
         <DialogContent>
           <StudentForm />
         </DialogContent>
-        <DialogActions>
-          <Button variant="outlined" color="warning" onClick={handleClose}>Cancel</Button>
-          <Button type="submit" variant="contained"  sx={{ mt: 2, mb: 2 }}>
-            Subscribe
-          </Button>
-        </DialogActions>
       </Dialog>
     </>
   );

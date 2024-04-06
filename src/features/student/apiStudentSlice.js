@@ -15,6 +15,14 @@ export const apiStudentSlice = createApi({
       query: () => "/students",
       providesTags: ["Student"],
     }),
+    getStudentsPagination: builder.mutation({
+      query: (payload) => ({
+        url: "/students/pagination",
+        method: "POST",
+        body: payload,
+      }),
+      providesTags: ["Student"],
+    }),
     getCertificate: builder.query({
       query: (payload) => `/certificate/student/pdf/${payload}`,
       providesTags: ["Student"],
@@ -38,21 +46,37 @@ export const apiStudentSlice = createApi({
       }),
       invalidatesTags: ["Student"],
     }),
-    /*  addNewPost: builder.mutation({
+    addStudent: builder.mutation({
       query: (payload) => ({
-        url: '/users/login',
-        method: 'POST',
+        url: "/students",
+        method: "POST",
         body: payload,
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
       }),
-      invalidatesTags: ['Post'],
-    }), */
+      invalidatesTags: ["Student"],
+    }),
+    updateStudent: builder.mutation({
+      query: (payload) => ({
+        url: `/students/${payload.id}`,
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: ["Student"],
+    }),
+    deleteStudent: builder.mutation({
+      query: (payload) => ({
+        url: `/students/${payload}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Student"],
+    }),
   }),
 });
 export const {
   useGetStudentsQuery,
   useGetCertificateQuery,
   useGetPDFCertificateMutation,
+  useAddStudentMutation,
+  useUpdateStudentMutation,
+  useDeleteStudentMutation,
+  useGetStudentsPaginationMutation,
 } = apiStudentSlice;
