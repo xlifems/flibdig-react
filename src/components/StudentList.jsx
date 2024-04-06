@@ -25,8 +25,8 @@ import { useState } from "react";
 export default function StudentList() {
   const dispatch = useDispatch();
   const [students, setStudents] = useState([]);
-  const [getPDFCertificate, response] = useGetPDFCertificateMutation();
-  const [getStudentsPagination, res] = useGetStudentsPaginationMutation();
+  const [getPDFCertificate, res] = useGetPDFCertificateMutation();
+  const [getStudentsPagination, result] = useGetStudentsPaginationMutation();
 
   const fetchStudents = async () => {
     const response = await getStudentsPagination({
@@ -37,44 +37,21 @@ export default function StudentList() {
     setStudents(response.data.data);
   };
 
-  const downloadCertificate = (id) => {
-    const payload = {
-      student_id: id,
-    };
-
-    getPDFCertificate(payload)
-      .unwrap()
-      .then(async (response) => {
-        var hiddenElement = document.createElement("a");
-
-        hiddenElement.href = response.data;
-        hiddenElement.target = "_blank";
-        hiddenElement.download = `${payload.student_id}_report.pdf`;
-        hiddenElement.click();
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        console.log("finally");
-      });
-  };
-
   useEffect(() => {
     fetchStudents();
   }, []);
 
   return (
     <>
-      {/*  {isGetLoading && (
+      {result.isLoading && (
         <div className="d-flex justify-content-center">
           <div className="spinner-border" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
         </div>
-      )} */}
+      )}
 
-      {students.length && (
+      {students.length && result.isSuccess && (
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
           {students.map((item) => (
             <Box key={item.id}>
@@ -118,11 +95,11 @@ export default function StudentList() {
         </List>
       )}
 
-      {/*    {isGetError && (
+      {result.isError && (
         <div className="alert alert-danger" role="alert">
-          {getError}
+          Error al cargar los estudiantes
         </div>
-      )} */}
+      )}
     </>
   );
 }
